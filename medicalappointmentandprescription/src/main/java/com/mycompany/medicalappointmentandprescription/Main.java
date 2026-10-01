@@ -8,7 +8,7 @@ package com.mycompany.medicalappointmentandprescription;
  *
  * @author ranbi
  */
-public class Medicalappointmentandprescription {
+public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
