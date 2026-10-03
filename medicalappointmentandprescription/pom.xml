@@ -36,7 +36,6 @@
     </dependencies>
       <build>
         <plugins>
-            <!-- Builds a single runnable JAR with all dependencies bundled in -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
