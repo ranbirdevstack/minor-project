@@ -16,6 +16,9 @@ public class Appointment {
     private LocalTime appointmentTime;
     String status;
     private LocalDateTime createdAt;
+    public Appointment()
+    {
+    }
     public Appointment(int appointmentId,int patientId,int doctorId,LocalDate appointmentDate,LocalTime appointmentTime,String status,LocalDateTime createdAt)
     {
       this.appointmentId=appointmentId;
@@ -74,12 +77,12 @@ public class Appointment {
     {
         this.status= status;
     }
-    public LocalDateTime CreatedAt()
+    public LocalDateTime getCreatedAt()
     {
         return createdAt;
     }
-    public void AppointmentId(int appointmentId)
+    public void setCreatedAt(LocalDateTime createdAt)
     {
-        this.appointmentId= appointmentId;
+        this.createdAt= createdAt;
     }
 }

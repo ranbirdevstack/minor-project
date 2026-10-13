@@ -13,6 +13,9 @@ public class Patient {
     private int patientId,registeredBy,age;
     private String fullName,gender,contactNumber,address,bloodGroup;
     private LocalDateTime registrationDate;
+    public Patient()
+    {
+    }
     public Patient(int patientId,int registeredBy,String fullName,int age,String gender,String contactNumber,String address,String bloodGroup,LocalDateTime registrationDate  )
     {
       this.patientId=patientId;

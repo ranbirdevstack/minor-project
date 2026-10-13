@@ -13,6 +13,9 @@ public class Doctor {
     private String doctorName,specialization,contactNumber,workingHours;
     private double consultationFee;
     private boolean avaliabilityStatus;
+    public Doctor()
+    {
+    }
     public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,boolean avaliabilityStatus)
     {
         this.doctorId=doctorId;

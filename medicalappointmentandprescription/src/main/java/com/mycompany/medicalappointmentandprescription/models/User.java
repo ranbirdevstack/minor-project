@@ -10,12 +10,16 @@ package com.mycompany.medicalappointmentandprescription.models;
  */
 public class User {
   private int userId;
-  private String username, role;
-public User(int userId,String username,String role)
+  private String username, role,password;
+  public User()
+  {
+  }
+public User(int userId,String username,String role,String password)
 {
     this.userId=userId;
     this.username=username;
     this.role=role;
+    this.password=password;
 }
 public int getUserId()
 {
@@ -41,5 +45,12 @@ public void setRole(String role )
 {
     this.role=role;
 }
-
+public String getPassword()
+{
+    return password;
+}
+public void setPassword(String password )
+{
+    this.password=password;
+}
 }
