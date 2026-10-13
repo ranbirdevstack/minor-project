@@ -38,7 +38,7 @@ public class Prescription {
     {
         return appointmentId;
     }
-    public void setAppontmentId(int appointmentId)
+    public void setAppointmentId(int appointmentId)
     {
         this.appointmentId=appointmentId;
     }

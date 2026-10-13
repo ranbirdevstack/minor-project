@@ -12,11 +12,11 @@ public class Doctor {
     private int doctorId,userId;
     private String doctorName,specialization,contactNumber,workingHours;
     private double consultationFee;
-    private boolean avaliabilityStatus;
+    private boolean availabilityStatus;
     public Doctor()
     {
     }
-    public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,boolean avaliabilityStatus)
+    public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,boolean availabilityStatus)
     {
         this.doctorId=doctorId;
         this.userId=userId;
@@ -25,7 +25,7 @@ public class Doctor {
         this.contactNumber=contactNumber;
         this.consultationFee=consultationFee;
         this.workingHours=workingHours;
-        this.avaliabilityStatus=avaliabilityStatus;
+        this.availabilityStatus=availabilityStatus;
     }
     public int getDoctorId()
     {
@@ -85,10 +85,10 @@ public class Doctor {
     }
     public boolean getAvaliabilityStatus()
     {
-        return avaliabilityStatus;
+        return availabilityStatus;
     }
-    public void setAvaliabilityStatus(boolean avaliabilityStatus)
+    public void setAvaliabilityStatus(boolean availabilityStatus)
     {
-        this.avaliabilityStatus=avaliabilityStatus;
+        this.availabilityStatus=availabilityStatus;
     }
 }

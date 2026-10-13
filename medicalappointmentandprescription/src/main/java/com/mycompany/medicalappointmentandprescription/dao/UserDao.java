@@ -15,7 +15,7 @@ public class UserDao {
     {
     }
       private static final List <DummyAccount> ACCOUNTS = List.of(new DummyAccount("admin","ad123",new User(1,"admin","Admin","ad123")),new DummyAccount("staff","st123",new User(2,"staff","Receptionist","st123")),new DummyAccount("doctor","dr123",new User(3,"doctor","Doctor","dr123")));
-      public User validateCreditials(String username,String password)
+      public User validateCredentials(String username,String password)
       {
           for (DummyAccount account:ACCOUNTS)
           {

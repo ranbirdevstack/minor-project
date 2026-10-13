@@ -14,7 +14,7 @@ public class Appointment {
     private int appointmentId,patientId,doctorId;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
-    String status;
+    private String status;
     private LocalDateTime createdAt;
     public Appointment()
     {
