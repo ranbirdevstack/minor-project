@@ -11,18 +11,37 @@ import java.util.List;
  * @author ranbi
  */
 public class UserDao {
-    private record DummyAccount(String username,String password,User user)
-    {
-    }
-      private static final List <DummyAccount> ACCOUNTS = List.of(new DummyAccount("admin","ad123",new User(1,"admin","Admin","ad123")),new DummyAccount("staff","st123",new User(2,"staff","Receptionist","st123")),new DummyAccount("doctor","dr123",new User(3,"doctor","Doctor","dr123")));
+   
+      private static final List <User> ACCOUNTS = List.of(new User(1,"admin","Admin","adm123"),new User(2,"staff","Receptionist","sta123"),new User(3,"doctor","Doctor","doc123"));
       public User validateCredentials(String username,String password)
       {
-          for (DummyAccount account:ACCOUNTS)
+          for (User account:ACCOUNTS)
           {
-              if(account.username().equals(username)&& account.password().equals(password))
-                  return account.user();
+              if(account.getUsername().equals(username)&& account.getPassword().equals(password))
+                  return account;
           }
           return null;
+      }
+      public User findByUserId(int userId )
+      {
+        for (User account:ACCOUNTS)
+          {
+              if(account.getUserId()== userId)
+              {
+                  return account;
+              }
+          }
+           return null;
+      }
+      public boolean updatePassword(int userId,String newPassword)
+      {
+          User u = findByUserId(userId);
+          if(u != null)
+          {
+              u.setPassword(newPassword);
+              return true;
+          }
+          return false;
       }
     }
     
