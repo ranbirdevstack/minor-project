@@ -3,6 +3,9 @@
  */
 
 package com.mycompany.medicalappointmentandprescription;
+import com.mycompany.medicalappointmentandprescription.ui.auth.LoginFrame;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -11,6 +14,10 @@ package com.mycompany.medicalappointmentandprescription;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+       SwingUtilities.invokeLater(()->{
+        LoginFrame lo=new LoginFrame();
+        lo.setLocationRelativeTo(null);
+        lo.setVisible(true);
+    });
     }
 }
