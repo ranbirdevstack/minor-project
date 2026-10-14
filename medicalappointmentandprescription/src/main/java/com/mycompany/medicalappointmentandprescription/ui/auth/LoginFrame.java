@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.medicalappointmentandprescription.ui.auth;
+import com.mycompany.medicalappointmentandprescription.dao.UserDao;
+import com.mycompany.medicalappointmentandprescription.models.User;
+import com.mycompany.medicalappointmentandprescription.ui.admin.AdminDashboardFrame;
+import com.mycompany.medicalappointmentandprescription.ui.doctor.AppointmentDashboardDoctorFrame;
+import com.mycompany.medicalappointmentandprescription.ui.staff.AppointmentDashboardStaffFrame;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +24,7 @@ public class LoginFrame extends javax.swing.JFrame {
      */
     public LoginFrame() {
         initComponents();
+
     }
 
     /**
@@ -28,21 +36,145 @@ public class LoginFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lbl_title = new javax.swing.JLabel();
+        lbl_username = new javax.swing.JLabel();
+        txt_username = new javax.swing.JTextField();
+        lbl_password = new javax.swing.JLabel();
+        txt_password = new javax.swing.JPasswordField();
+        btn_login = new javax.swing.JButton();
+        lbl_forgetpass = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(600, 400));
+        setResizable(false);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
+
+        lbl_title.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lbl_title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_title.setText("Medical Appointment & Precription System");
+
+        lbl_username.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbl_username.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_username.setText("Username");
+
+        lbl_password.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbl_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_password.setText("Password");
+
+        btn_login.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        btn_login.setText("Login");
+        btn_login.addActionListener(this::btn_loginActionPerformed);
+
+        lbl_forgetpass.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbl_forgetpass.setForeground(new java.awt.Color(0, 0, 255));
+        lbl_forgetpass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_forgetpass.setText("Forget Password?");
+        lbl_forgetpass.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbl_forgetpass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_forgetpassMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(174, 174, 174)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_username)
+                    .addComponent(lbl_password))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_username)
+                    .addComponent(txt_password, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(109, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lbl_title)
+                        .addGap(71, 71, 71))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_forgetpass)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btn_login)
+                                .addGap(14, 14, 14)))
+                        .addGap(193, 193, 193))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(lbl_title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_username)
+                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_password)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(btn_login)
+                .addGap(18, 18, 18)
+                .addComponent(lbl_forgetpass)
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
+      String username=txt_username.getText().trim();
+      String password= new String(txt_password.getPassword());
+      if(username.isEmpty() || password.isEmpty())
+      {
+        JOptionPane.showMessageDialog(this, "please enter valid Username and Password","Validation Error",JOptionPane.WARNING_MESSAGE);
+        return;
+      }
+      UserDao us=new UserDao();
+      User u = us.validateCredentials(username, password);
+      if(u == null)
+      {
+          JOptionPane.showMessageDialog(this, "Invalid Username or Password","Login Failed",JOptionPane.ERROR_MESSAGE);
+        return ;
+      }
+     String role = u.getRole();
+     JFrame dashboard = null;
+     if("Admin".equalsIgnoreCase(role))
+         dashboard= new AdminDashboardFrame();
+     else if ("Doctor".equalsIgnoreCase(role))
+         dashboard= new AppointmentDashboardDoctorFrame();
+     else if ("Receptionist".equalsIgnoreCase(role)||"Staff".equalsIgnoreCase(role))
+         dashboard = new AppointmentDashboardStaffFrame();
+     if(dashboard != null)
+     {
+         dashboard.setLocationRelativeTo(null);
+         dashboard.setVisible(true);
+         this.dispose();
+     }
+     else{
+         JOptionPane.showMessageDialog(this, "Unknown User role","Login Error",JOptionPane.ERROR_MESSAGE);
+     }
+    }//GEN-LAST:event_btn_loginActionPerformed
+   
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseClicked
+
+    private void lbl_forgetpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_forgetpassMouseClicked
+       ForgetPasswordFrame pass = new ForgetPasswordFrame();
+       pass.setLocationRelativeTo(null);
+       pass.setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_lbl_forgetpassMouseClicked
 
     /**
      * @param args the command line arguments
@@ -70,5 +202,12 @@ public class LoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_login;
+    private javax.swing.JLabel lbl_forgetpass;
+    private javax.swing.JLabel lbl_password;
+    private javax.swing.JLabel lbl_title;
+    private javax.swing.JLabel lbl_username;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
