@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
  * @author ranbi
  */
 public class MedicineReminder {
-   private int reminderId,patientId,prescriptionId;
+   private int reminderId,patientId,prescriptionId,intervalHours;
    private String medicineName,dosage,status;
    private LocalDateTime scheduledAt,snoozeUntil;
    public MedicineReminder()
    {
        
    }
-   public MedicineReminder(int reminderId,int patientId,int prescriptionId,String medicineName,String dosage,LocalDateTime scheduledAt,LocalDateTime snoozeUntil,String status )
+   public MedicineReminder(int reminderId,int patientId,int prescriptionId,String medicineName,String dosage,LocalDateTime scheduledAt,int intervalHours,LocalDateTime snoozeUntil,String status )
    {
      this.reminderId=reminderId;
      this.patientId=patientId;
@@ -24,6 +24,7 @@ public class MedicineReminder {
      this.medicineName=medicineName;
      this.dosage=dosage;
      this.scheduledAt=scheduledAt;
+     this.intervalHours=intervalHours;
      this.snoozeUntil=snoozeUntil;
      this.status=status;
    }
@@ -43,7 +44,7 @@ public class MedicineReminder {
     {
         this.patientId=patientId;
     }
-    public int getPrecriptionId()
+    public int getPrescriptionId()
     {
         return prescriptionId;
     }
@@ -74,6 +75,14 @@ public class MedicineReminder {
     public void setScheduledAt(LocalDateTime scheduledAt)
     {
         this.scheduledAt=scheduledAt;
+    }
+    public int getIntervalHours()
+    {
+        return intervalHours;
+    }
+    public void setIntervalHours(int intervalHours)
+    {
+        this.intervalHours=intervalHours;
     }
     public LocalDateTime getSnoozeUntil()
     {

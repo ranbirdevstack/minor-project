@@ -4,7 +4,10 @@
  */
 package com.mycompany.medicalappointmentandprescription.dao;
 import com.mycompany.medicalappointmentandprescription.models.User;
+import com.mycompany.medicalappointmentandprescription.models.Patient;
+import com.mycompany.medicalappointmentandprescription.models.Doctor;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -12,7 +15,13 @@ import java.util.List;
  */
 public class UserDao {
    
-      private static final List <User> ACCOUNTS = List.of(new User(1,"admin","Admin","adm123"),new User(2,"staff","Receptionist","sta123"),new User(3,"doctor","Doctor","doc123"));
+      private static final List <User> ACCOUNTS = new ArrayList<>();
+      private static int nextUserId=4;
+      static {
+          ACCOUNTS.add(new User(1,"admin","Admin","adm123"));
+          ACCOUNTS.add(new User(2,"staff","Receptionist","rec123"));
+          ACCOUNTS.add(new User(3,"doctor","Doctor","doc123"));
+      }
       public User validateCredentials(String username,String password)
       {
           for (User account:ACCOUNTS)
@@ -33,6 +42,53 @@ public class UserDao {
           }
            return null;
       }
+      public User findByUsername(String username)
+      {
+          if(username == null || username.trim().isEmpty() )
+          {
+              return null;
+          }
+          for(User u : ACCOUNTS)
+          {
+              if(u.getUsername().equalsIgnoreCase(username.trim()))
+              {
+                  return u;
+              }
+          }
+          return null;
+      }
+      public List<User> findAll()
+      {
+          return new ArrayList<>(ACCOUNTS);
+      }
+      public List<User> findStaffAccount()
+      {
+          List <User> staff=new ArrayList<>();
+          for(User u : ACCOUNTS)
+          {
+              if("Receptionist".equals(u.getRole()))
+              {
+                  staff.add(u);
+              }
+          }
+         return staff;
+      }
+      public boolean addUser(User u)
+      {
+       if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())  
+           return false;
+       if(findByUsername(u.getUsername())!= null)
+           return false;
+       u.setUserId(nextUserId++);
+       ACCOUNTS.add(u);
+       return true;
+      }
+      public boolean addStaff(User u)
+      {
+          if(u==null||!"Receptionist".equals(u.getRole()))
+              return false;
+          return addUser(u);
+      }
       public boolean updatePassword(int userId,String newPassword)
       {
           User u = findByUserId(userId);
@@ -43,6 +99,27 @@ public class UserDao {
           }
           return false;
       }
+      public boolean deleteAccount(int userId)  
+        {
+            User u = findByUserId(userId);
+            if(u==null)
+                return false;
+            if("Admin".equals(u.getRole()))
+                return false;
+            PatientDao pd = new PatientDao();
+            for(Patient p:pd.findAll())
+            {
+                if(p.getRegisteredBy()== userId)
+                    return false;
+            }
+            DoctorDao dd = new DoctorDao();
+            for(Doctor d: dd.findAll())
+            {
+                if(d.getUserId()==userId)
+                    return false;
+            }
+            return ACCOUNTS.remove(u);
+        }
     }
     
 
