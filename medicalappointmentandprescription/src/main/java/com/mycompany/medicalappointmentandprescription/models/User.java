@@ -10,16 +10,20 @@ package com.mycompany.medicalappointmentandprescription.models;
  */
 public class User {
   private int userId;
-  private String username, role,password;
+  private String username,fullName,contactNumber, role,password;
+  private boolean isActive;
   public User()
   {
   }
-public User(int userId,String username,String role,String password)
+public User(int userId,String username,String fullName,String contactNumber,String role,String password,boolean isActive)
 {
     this.userId=userId;
     this.username=username;
+    this.fullName=fullName;
+    this.contactNumber=contactNumber;
     this.role=role;
     this.password=password;
+    this.isActive=isActive;
 }
 public int getUserId()
 {
@@ -37,6 +41,22 @@ public void setUsername(String username)
 {
     this.username=username;
 }
+public String getFullName()
+    {
+        return fullName;
+    }
+public void setFullName(String fullName)
+    {
+        this.fullName=fullName;
+    }
+public String getContactNumber()
+    {
+        return contactNumber;
+    }
+public void setContactNumber(String contactNumber)
+    {
+        this.contactNumber=contactNumber;
+    }
 public String getRole()
 {
     return role;
@@ -52,5 +72,13 @@ public String getPassword()
 public void setPassword(String password )
 {
     this.password=password;
+}
+public boolean getIsActive()
+{
+    return isActive;
+}
+public void setIsActive(boolean isActive )
+{
+    this.isActive=isActive;
 }
 }

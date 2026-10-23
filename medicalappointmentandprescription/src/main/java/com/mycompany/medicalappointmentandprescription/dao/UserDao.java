@@ -18,9 +18,9 @@ public class UserDao {
       private static final List <User> ACCOUNTS = new ArrayList<>();
       private static int nextUserId=4;
       static {
-          ACCOUNTS.add(new User(1,"admin","Admin","Rahul Singh","9876543214","adm123",true));
-          ACCOUNTS.add(new User(2,"staff","Staff","Priya Sharma","9876543215","rec123",true));
-          ACCOUNTS.add(new User(3,"doctor","Doctor","Dr Amit Verma","9876543213","doc123",true));
+          ACCOUNTS.add(new User(1,"admin","Rahul Singh","9876543214","Admin","adm123",true));
+          ACCOUNTS.add(new User(2,"staff","Priya Sharma","9876543215","Staff","rec123",true));
+          ACCOUNTS.add(new User(3,"doctor","Dr Amit Verma","9876543213","Doctor","doc123",true));
       }
       public User validateCredentials(String username,String password)
       {
