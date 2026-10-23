@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.medicalappointmentandprescription.models;
-
+import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author ranbi
@@ -13,10 +15,11 @@ public class Doctor {
     private String doctorName,specialization,contactNumber,workingHours;
     private double consultationFee;
     private boolean availabilityStatus;
+    private List<DayOfWeek>workingDay;
     public Doctor()
     {
     }
-    public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,boolean availabilityStatus)
+    public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,List<DayOfWeek>workingDay,boolean availabilityStatus)
     {
         this.doctorId=doctorId;
         this.userId=userId;
@@ -25,6 +28,7 @@ public class Doctor {
         this.contactNumber=contactNumber;
         this.consultationFee=consultationFee;
         this.workingHours=workingHours;
+        this.workingDay= workingDay==null?new ArrayList<>():new ArrayList<>(workingDay);
         this.availabilityStatus=availabilityStatus;
     }
     public int getDoctorId()
@@ -82,6 +86,14 @@ public class Doctor {
     public void setWorkingHours(String workingHours )
     {
         this.workingHours=workingHours;
+    }
+    public List getWorkingDay()
+    {
+        return new ArrayList<>(workingDay);
+    }
+    public void setWorkingDay(List<DayOfWeek>workingDay)
+    {
+        this.workingDay= workingDay==null?new ArrayList<>():new ArrayList<>(workingDay);
     }
     public boolean getAvaliabilityStatus()
     {

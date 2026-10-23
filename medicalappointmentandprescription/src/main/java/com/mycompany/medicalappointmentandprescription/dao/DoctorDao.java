@@ -8,6 +8,8 @@ import com.mycompany.medicalappointmentandprescription.models.User;
 import com.mycompany.medicalappointmentandprescription.models.Appointment; 
 import com.mycompany.medicalappointmentandprescription.models.Prescription;
 import com.mycompany.medicalappointmentandprescription.models.MedicalHistory;
+import java.time.DayOfWeek;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -21,7 +23,7 @@ public class DoctorDao {
  
     static
     {
-     Doctors.add(new Doctor(1,3,"Dr Amit Verma","General Physician","9876543213",500.00,"09:00 AM -02:00 PM",true));
+     Doctors.add(new Doctor(1,3,"Dr Amit Verma","General Physician","9876543213",500.00,"09:00 AM -02:00 PM",Arrays.asList(DayOfWeek.MONDAY,DayOfWeek.WEDNESDAY,DayOfWeek.FRIDAY),true));
     }
     public boolean addDoctor(Doctor d)
     {
@@ -86,6 +88,7 @@ public class DoctorDao {
       exist.setWorkingHours(d.getWorkingHours());
       exist.setConsultationFee(d.getConsultationFee());
       exist.setAvaliabilityStatus(d.getAvaliabilityStatus());
+      exist.setWorkingDays(d.getWorkingDays());
       return true;
     }
     public boolean deleteDoctor(int doctorId)

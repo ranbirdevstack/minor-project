@@ -18,15 +18,17 @@ public class UserDao {
       private static final List <User> ACCOUNTS = new ArrayList<>();
       private static int nextUserId=4;
       static {
-          ACCOUNTS.add(new User(1,"admin","Admin","adm123"));
-          ACCOUNTS.add(new User(2,"staff","Receptionist","rec123"));
-          ACCOUNTS.add(new User(3,"doctor","Doctor","doc123"));
+          ACCOUNTS.add(new User(1,"admin","Admin","Rahul Singh","9876543214","adm123",true));
+          ACCOUNTS.add(new User(2,"staff","Staff","Priya Sharma","9876543215","rec123",true));
+          ACCOUNTS.add(new User(3,"doctor","Doctor","Dr Amit Verma","9876543213","doc123",true));
       }
       public User validateCredentials(String username,String password)
       {
+          if(username==null||password==null)
+              return null;
           for (User account:ACCOUNTS)
           {
-              if(account.getUsername().equals(username)&& account.getPassword().equals(password))
+              if(account.getUsername().equals(username)&& account.getPassword().equals(password)&&account.getIsActive())
                   return account;
           }
           return null;
@@ -66,7 +68,7 @@ public class UserDao {
           List <User> staff=new ArrayList<>();
           for(User u : ACCOUNTS)
           {
-              if("Receptionist".equals(u.getRole()))
+              if("Staff".equals(u.getRole()))
               {
                   staff.add(u);
               }
@@ -75,11 +77,12 @@ public class UserDao {
       }
       public boolean addUser(User u)
       {
-       if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())  
+       if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()||u.getFullName()== null||u.getFullName().trim().isEmpty()|| u.getContactNumber()==null||u.getContactNumber().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())  
            return false;
        if(findByUsername(u.getUsername())!= null)
            return false;
        u.setUserId(nextUserId++);
+       u.setIsActive(true);
        ACCOUNTS.add(u);
        return true;
       }
@@ -88,6 +91,18 @@ public class UserDao {
           if(u==null||!"Receptionist".equals(u.getRole()))
               return false;
           return addUser(u);
+      }
+      public boolean updateUser(User u)
+      {
+          if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()||u.getFullName()== null||u.getFullName().trim().isEmpty()|| u.getContactNumber()==null||u.getContactNumber().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())  
+           return false;
+          User exist= findByUserId(u.getUserId());
+          if(exist==null)
+              return false;
+          exist.setContactNumber(u.getContactNumber());
+          exist.setFullName(u.getFullName());
+          exist.setIsActive(u.getIsActive());
+          return true;
       }
       public boolean updatePassword(int userId,String newPassword)
       {
