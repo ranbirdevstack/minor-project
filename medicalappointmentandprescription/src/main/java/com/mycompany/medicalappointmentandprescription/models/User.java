@@ -11,11 +11,11 @@ package com.mycompany.medicalappointmentandprescription.models;
 public class User {
   private int userId;
   private String username,fullName,contactNumber, role,password;
-  private boolean isActive;
+  private boolean isActive,availabilityStatus;
   public User()
   {
   }
-public User(int userId,String username,String fullName,String contactNumber,String role,String password,boolean isActive)
+public User(int userId,String username,String fullName,String contactNumber,String role,String password,boolean isActive,boolean availabilityStatus)
 {
     this.userId=userId;
     this.username=username;
@@ -24,6 +24,7 @@ public User(int userId,String username,String fullName,String contactNumber,Stri
     this.role=role;
     this.password=password;
     this.isActive=isActive;
+    this.availabilityStatus=availabilityStatus;
 }
 public int getUserId()
 {
@@ -81,4 +82,12 @@ public void setIsActive(boolean isActive )
 {
     this.isActive=isActive;
 }
+public boolean getAvaliabilityStatus()
+    {
+        return availabilityStatus;
+    }
+public void setAvaliabilityStatus(boolean availabilityStatus)
+    {
+        this.availabilityStatus=availabilityStatus;
+    }
 }

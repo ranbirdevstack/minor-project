@@ -15,11 +15,11 @@ public class Doctor {
     private String doctorName,specialization,contactNumber,workingHours;
     private double consultationFee;
     private boolean availabilityStatus;
-    private List<DayOfWeek>workingDay;
+    private List<DayOfWeek>workingDays;
     public Doctor()
     {
     }
-    public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,List<DayOfWeek>workingDay,boolean availabilityStatus)
+    public Doctor(int doctorId,int userId,String doctorName,String specialization,String contactNumber,double consultationFee,String workingHours,List<DayOfWeek>workingDays,boolean availabilityStatus)
     {
         this.doctorId=doctorId;
         this.userId=userId;
@@ -28,7 +28,7 @@ public class Doctor {
         this.contactNumber=contactNumber;
         this.consultationFee=consultationFee;
         this.workingHours=workingHours;
-        this.workingDay= workingDay==null?new ArrayList<>():new ArrayList<>(workingDay);
+        this.workingDays= workingDays==null?new ArrayList<>():new ArrayList<>(workingDays);
         this.availabilityStatus=availabilityStatus;
     }
     public int getDoctorId()
@@ -87,13 +87,13 @@ public class Doctor {
     {
         this.workingHours=workingHours;
     }
-    public List getWorkingDay()
+    public List getWorkingDays()
     {
-        return new ArrayList<>(workingDay);
+        return new ArrayList<>(workingDays);
     }
-    public void setWorkingDay(List<DayOfWeek>workingDay)
+    public void setWorkingDays(List<DayOfWeek>workingDays)
     {
-        this.workingDay= workingDay==null?new ArrayList<>():new ArrayList<>(workingDay);
+        this.workingDays= workingDays==null?new ArrayList<>():new ArrayList<>(workingDays);
     }
     public boolean getAvaliabilityStatus()
     {

@@ -14,13 +14,13 @@ import java.util.ArrayList;
  * @author ranbi
  */
 public class UserDao {
-   
+
       private static final List <User> ACCOUNTS = new ArrayList<>();
       private static int nextUserId=4;
       static {
-          ACCOUNTS.add(new User(1,"admin","Rahul Singh","9876543214","Admin","adm123",true));
-          ACCOUNTS.add(new User(2,"staff","Priya Sharma","9876543215","Staff","rec123",true));
-          ACCOUNTS.add(new User(3,"doctor","Dr Amit Verma","9876543213","Doctor","doc123",true));
+          ACCOUNTS.add(new User(1,"admin","Rahul Singh","9876543214","Admin","adm123",true,true));
+          ACCOUNTS.add(new User(2,"staff","Priya Sharma","9876543215","Staff","rec123",true,true));
+          ACCOUNTS.add(new User(3,"doctor","Dr Amit Verma","9876543213","Doctor","doc123",true,true));
       }
       public User validateCredentials(String username,String password)
       {
@@ -77,7 +77,7 @@ public class UserDao {
       }
       public boolean addUser(User u)
       {
-       if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()||u.getFullName()== null||u.getFullName().trim().isEmpty()|| u.getContactNumber()==null||u.getContactNumber().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())  
+       if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()||u.getFullName()== null||u.getFullName().trim().isEmpty()|| u.getContactNumber()==null||u.getContactNumber().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())
            return false;
        if(findByUsername(u.getUsername())!= null)
            return false;
@@ -88,13 +88,13 @@ public class UserDao {
       }
       public boolean addStaff(User u)
       {
-          if(u==null||!"Receptionist".equals(u.getRole()))
+          if(u==null||!"Staff".equals(u.getRole()))
               return false;
           return addUser(u);
       }
       public boolean updateUser(User u)
       {
-          if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()||u.getFullName()== null||u.getFullName().trim().isEmpty()|| u.getContactNumber()==null||u.getContactNumber().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())  
+          if(u == null || u.getUsername()==null||u.getUsername().trim().isEmpty()||u.getFullName()== null||u.getFullName().trim().isEmpty()|| u.getContactNumber()==null||u.getContactNumber().trim().isEmpty()|| u.getPassword()== null|| u.getPassword().trim().isEmpty()|| u.getRole()== null || u.getRole().trim().isEmpty())
            return false;
           User exist= findByUserId(u.getUserId());
           if(exist==null)
@@ -102,6 +102,7 @@ public class UserDao {
           exist.setContactNumber(u.getContactNumber());
           exist.setFullName(u.getFullName());
           exist.setIsActive(u.getIsActive());
+          exist.setAvaliabilityStatus(u.getAvaliabilityStatus());
           return true;
       }
       public boolean updatePassword(int userId,String newPassword)
@@ -114,7 +115,7 @@ public class UserDao {
           }
           return false;
       }
-      public boolean deleteAccount(int userId)  
+      public boolean deleteAccount(int userId)
         {
             User u = findByUserId(userId);
             if(u==null)
@@ -136,5 +137,5 @@ public class UserDao {
             return ACCOUNTS.remove(u);
         }
     }
-    
+
 
