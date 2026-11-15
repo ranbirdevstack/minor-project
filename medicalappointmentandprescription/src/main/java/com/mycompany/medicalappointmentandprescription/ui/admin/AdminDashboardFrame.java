@@ -3,7 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.medicalappointmentandprescription.ui.admin;
-
+import com.mycompany.medicalappointmentandprescription.dao.UserDao;
+import com.mycompany.medicalappointmentandprescription.dao.DoctorDao;
+import com.mycompany.medicalappointmentandprescription.dao.PatientDao;
+import com.mycompany.medicalappointmentandprescription.ui.auth.LoginFrame;
+import java.util.concurrent.ExecutionException;
+import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 /**
  *
  * @author ranbi
@@ -17,6 +23,8 @@ public class AdminDashboardFrame extends javax.swing.JFrame {
      */
     public AdminDashboardFrame() {
         initComponents();
+        setLocationRelativeTo(null);
+        loadStatics();
     }
 
     /**
@@ -28,21 +36,395 @@ public class AdminDashboardFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnl_header = new javax.swing.JPanel();
+        lblsystmtitle = new javax.swing.JLabel();
+        btn_logout = new javax.swing.JButton();
+        pnldashboadheading = new javax.swing.JPanel();
+        lbltitle = new javax.swing.JLabel();
+        lblsubtitle = new javax.swing.JLabel();
+        btn_refresh = new javax.swing.JButton();
+        pnlUserCard = new javax.swing.JPanel();
+        lbluserheading = new javax.swing.JLabel();
+        lbltotalusers = new javax.swing.JLabel();
+        pnlStaffCard = new javax.swing.JPanel();
+        lblstaffheading = new javax.swing.JLabel();
+        lbltotalstaffs = new javax.swing.JLabel();
+        pnlPatientCard = new javax.swing.JPanel();
+        lblpatientheading = new javax.swing.JLabel();
+        lbltotalpatients = new javax.swing.JLabel();
+        pnlDoctorCard = new javax.swing.JPanel();
+        lbldoctorheading = new javax.swing.JLabel();
+        lbltotaldoctors = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        lblmanagement = new javax.swing.JLabel();
+        btn_mngstaff = new javax.swing.JButton();
+        btn_mngdoctor = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        lblsystmtitle.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lblsystmtitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblsystmtitle.setText("Medical Appointment & Prescription System");
+
+        btn_logout.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        btn_logout.setText("Logout");
+        btn_logout.addActionListener(this::btn_logoutActionPerformed);
+
+        javax.swing.GroupLayout pnl_headerLayout = new javax.swing.GroupLayout(pnl_header);
+        pnl_header.setLayout(pnl_headerLayout);
+        pnl_headerLayout.setHorizontalGroup(
+            pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_headerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblsystmtitle)
+                .addGap(153, 153, 153)
+                .addComponent(btn_logout)
+                .addGap(19, 19, 19))
+        );
+        pnl_headerLayout.setVerticalGroup(
+            pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_headerLayout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addGroup(pnl_headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblsystmtitle)
+                    .addComponent(btn_logout))
+                .addContainerGap())
+        );
+
+        lbltitle.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lbltitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbltitle.setText("Admin Dashboard");
+
+        lblsubtitle.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lblsubtitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblsubtitle.setText("Overview of System Statics ");
+        lblsubtitle.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        btn_refresh.setText("Refresh");
+        btn_refresh.addActionListener(this::btn_refreshActionPerformed);
+
+        javax.swing.GroupLayout pnldashboadheadingLayout = new javax.swing.GroupLayout(pnldashboadheading);
+        pnldashboadheading.setLayout(pnldashboadheadingLayout);
+        pnldashboadheadingLayout.setHorizontalGroup(
+            pnldashboadheadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnldashboadheadingLayout.createSequentialGroup()
+                .addContainerGap(330, Short.MAX_VALUE)
+                .addGroup(pnldashboadheadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnldashboadheadingLayout.createSequentialGroup()
+                        .addComponent(lbltitle)
+                        .addGap(265, 265, 265))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnldashboadheadingLayout.createSequentialGroup()
+                        .addComponent(lblsubtitle)
+                        .addGap(244, 244, 244)))
+                .addComponent(btn_refresh)
+                .addGap(17, 17, 17))
+        );
+        pnldashboadheadingLayout.setVerticalGroup(
+            pnldashboadheadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnldashboadheadingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnldashboadheadingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnldashboadheadingLayout.createSequentialGroup()
+                        .addComponent(lbltitle, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblsubtitle)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnldashboadheadingLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_refresh)
+                        .addGap(14, 14, 14))))
+        );
+
+        pnlUserCard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lbluserheading.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lbluserheading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbluserheading.setText("Total Users");
+
+        lbltotalusers.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbltotalusers.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbltotalusers.setText("00");
+
+        javax.swing.GroupLayout pnlUserCardLayout = new javax.swing.GroupLayout(pnlUserCard);
+        pnlUserCard.setLayout(pnlUserCardLayout);
+        pnlUserCardLayout.setHorizontalGroup(
+            pnlUserCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUserCardLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(lbluserheading)
+                .addGap(17, 17, 17))
+            .addGroup(pnlUserCardLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(lbltotalusers)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlUserCardLayout.setVerticalGroup(
+            pnlUserCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlUserCardLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lbluserheading)
+                .addGap(18, 18, 18)
+                .addComponent(lbltotalusers)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+
+        pnlStaffCard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lblstaffheading.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lblstaffheading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblstaffheading.setText("Total Staffs");
+
+        lbltotalstaffs.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbltotalstaffs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbltotalstaffs.setText("00");
+
+        javax.swing.GroupLayout pnlStaffCardLayout = new javax.swing.GroupLayout(pnlStaffCard);
+        pnlStaffCard.setLayout(pnlStaffCardLayout);
+        pnlStaffCardLayout.setHorizontalGroup(
+            pnlStaffCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlStaffCardLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(lblstaffheading)
+                .addGap(17, 17, 17))
+            .addGroup(pnlStaffCardLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(lbltotalstaffs)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlStaffCardLayout.setVerticalGroup(
+            pnlStaffCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlStaffCardLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblstaffheading)
+                .addGap(18, 18, 18)
+                .addComponent(lbltotalstaffs)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+
+        pnlPatientCard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lblpatientheading.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lblpatientheading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblpatientheading.setText("Total Patients");
+
+        lbltotalpatients.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbltotalpatients.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbltotalpatients.setText("00");
+
+        javax.swing.GroupLayout pnlPatientCardLayout = new javax.swing.GroupLayout(pnlPatientCard);
+        pnlPatientCard.setLayout(pnlPatientCardLayout);
+        pnlPatientCardLayout.setHorizontalGroup(
+            pnlPatientCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPatientCardLayout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(lblpatientheading)
+                .addGap(17, 17, 17))
+            .addGroup(pnlPatientCardLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(lbltotalpatients)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlPatientCardLayout.setVerticalGroup(
+            pnlPatientCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPatientCardLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblpatientheading)
+                .addGap(18, 18, 18)
+                .addComponent(lbltotalpatients)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+
+        pnlDoctorCard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lbldoctorheading.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lbldoctorheading.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbldoctorheading.setText("Total Doctors");
+
+        lbltotaldoctors.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbltotaldoctors.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbltotaldoctors.setText("00");
+
+        javax.swing.GroupLayout pnlDoctorCardLayout = new javax.swing.GroupLayout(pnlDoctorCard);
+        pnlDoctorCard.setLayout(pnlDoctorCardLayout);
+        pnlDoctorCardLayout.setHorizontalGroup(
+            pnlDoctorCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDoctorCardLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(lbltotaldoctors)
+                .addContainerGap(73, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDoctorCardLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbldoctorheading)
+                .addGap(19, 19, 19))
+        );
+        pnlDoctorCardLayout.setVerticalGroup(
+            pnlDoctorCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDoctorCardLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lbldoctorheading)
+                .addGap(18, 18, 18)
+                .addComponent(lbltotaldoctors)
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+
+        lblmanagement.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lblmanagement.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblmanagement.setText("Managenment");
+
+        btn_mngstaff.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        btn_mngstaff.setText("Manage Staff");
+        btn_mngstaff.addActionListener(this::btn_mngstaffActionPerformed);
+
+        btn_mngdoctor.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        btn_mngdoctor.setText("Manage Doctors");
+        btn_mngdoctor.addActionListener(this::btn_mngdoctorActionPerformed);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(268, 268, 268)
+                .addComponent(lblmanagement)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(185, Short.MAX_VALUE)
+                .addComponent(btn_mngdoctor)
+                .addGap(38, 38, 38)
+                .addComponent(btn_mngstaff)
+                .addGap(206, 206, 206))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblmanagement)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_mngstaff)
+                    .addComponent(btn_mngdoctor))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnl_header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnldashboadheading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 3, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(pnlUserCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(61, 61, 61)
+                .addComponent(pnlDoctorCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlStaffCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(pnlPatientCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnl_header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnldashboadheading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlPatientCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlUserCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlStaffCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlDoctorCard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+   private void loadStatics()
+   {
+       btn_refresh.setEnabled(false);
+       new SwingWorker<int[], Void>()
+       {
+           @Override 
+           protected int[] doInBackground ()throws Exception
+           {
+               DoctorDao dd=new DoctorDao();
+               PatientDao pd= new PatientDao();
+               UserDao ud = new UserDao();
+               return new int[]{
+                   ud.findAll().size(),dd.findAll().size(),ud.findStaffAccount().size(),pd.findAll().size()
+               };
+           }
+            @Override 
+            protected void done()
+            {
+                try{
+                    int[]counts=get();
+                    lbltotalusers.setText(String.format("%02d", counts[0]));
+                    lbltotaldoctors.setText(String.format("%02d", counts[1]));
+                    lbltotalstaffs.setText(String.format("%02d", counts[2]));
+                    lbltotalpatients.setText(String.format("%02d", counts[3]));
+                }
+                catch(InterruptedException e)
+                {
+                  Thread.currentThread().interrupt();
+                  JOptionPane.showMessageDialog(AdminDashboardFrame.this, "Dashboard was interrupted", "Refresh Error", JOptionPane.ERROR_MESSAGE);
+                }
+                catch(Exception e)
+                {
+                   JOptionPane.showMessageDialog(AdminDashboardFrame.this, "Unable to load statics.\n"+e.getCause().getMessage(), "Dashboard Error", JOptionPane.ERROR_MESSAGE);   
+                }
+                finally
+                {
+                    btn_refresh.setText("\u21BB Refresh");
+                    btn_refresh.setEnabled(true);
+                }}
+       }.execute();
+   }
+    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
+       int choice= JOptionPane.showConfirmDialog(this, "Are sure you want to logout ?","Confirm Logout",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+       if(choice== JOptionPane.YES_OPTION)
+       {
+           LoginFrame fr=new LoginFrame();
+           fr.setLocationRelativeTo(null);
+           fr.setVisible(true);
+           this.dispose();
+       }
+    }//GEN-LAST:event_btn_logoutActionPerformed
+
+    private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed
+        btn_refresh.setText("\u27F3 Refreshing ");
+        btn_refresh.setEnabled(false);
+        loadStatics();
+    }//GEN-LAST:event_btn_refreshActionPerformed
+
+    private void btn_mngstaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mngstaffActionPerformed
+        ManageStaffFrame fr=new ManageStaffFrame();
+        fr.setLocationRelativeTo(null);
+        fr.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_mngstaffActionPerformed
+
+    private void btn_mngdoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mngdoctorActionPerformed
+        ManageDoctorFrame fr= new ManageDoctorFrame();
+        fr.setLocationRelativeTo(null);
+        fr.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_mngdoctorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +452,28 @@ public class AdminDashboardFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_logout;
+    private javax.swing.JButton btn_mngdoctor;
+    private javax.swing.JButton btn_mngstaff;
+    private javax.swing.JButton btn_refresh;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbldoctorheading;
+    private javax.swing.JLabel lblmanagement;
+    private javax.swing.JLabel lblpatientheading;
+    private javax.swing.JLabel lblstaffheading;
+    private javax.swing.JLabel lblsubtitle;
+    private javax.swing.JLabel lblsystmtitle;
+    private javax.swing.JLabel lbltitle;
+    private javax.swing.JLabel lbltotaldoctors;
+    private javax.swing.JLabel lbltotalpatients;
+    private javax.swing.JLabel lbltotalstaffs;
+    private javax.swing.JLabel lbltotalusers;
+    private javax.swing.JLabel lbluserheading;
+    private javax.swing.JPanel pnlDoctorCard;
+    private javax.swing.JPanel pnlPatientCard;
+    private javax.swing.JPanel pnlStaffCard;
+    private javax.swing.JPanel pnlUserCard;
+    private javax.swing.JPanel pnl_header;
+    private javax.swing.JPanel pnldashboadheading;
     // End of variables declaration//GEN-END:variables
 }
