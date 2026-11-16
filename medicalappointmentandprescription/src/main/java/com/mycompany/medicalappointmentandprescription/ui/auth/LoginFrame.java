@@ -145,15 +145,15 @@ public class LoginFrame extends javax.swing.JFrame {
       {
           JOptionPane.showMessageDialog(this, "Invalid Username or Password","Login Failed",JOptionPane.ERROR_MESSAGE);
         return ;
-      }
+      }  
      String role = u.getRole();
      JFrame dashboard = null;
      if("Admin".equalsIgnoreCase(role))
          dashboard= new AdminDashboardFrame();
      else if ("Doctor".equalsIgnoreCase(role))
-         dashboard= new AppointmentDashboardDoctorFrame();
+         dashboard= new AppointmentDashboardDoctorFrame(u.getUserId());
      else if ("Receptionist".equalsIgnoreCase(role)||"Staff".equalsIgnoreCase(role))
-         dashboard = new AppointmentDashboardStaffFrame();
+         dashboard = new AppointmentDashboardStaffFrame(u.getUserId());
      if(dashboard != null)
      {
          dashboard.setLocationRelativeTo(null);
