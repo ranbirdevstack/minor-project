@@ -15,7 +15,7 @@ public class AppointmentDashboardStaffFrame extends javax.swing.JFrame {
     /**
      * Creates new form AppointmentDashboardStaffFrame
      */
-    public AppointmentDashboardStaffFrame() {
+    public AppointmentDashboardStaffFrame(int staffId) {
         initComponents();
     }
 
@@ -66,7 +66,7 @@ public class AppointmentDashboardStaffFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AppointmentDashboardStaffFrame().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new AppointmentDashboardStaffFrame(2).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
