@@ -126,17 +126,31 @@ public class MedicineReminderDao {
         exist.setStatus(r.getStatus());
         return true;
     }
-    public boolean snoozedReminder(int reminderId,int minutes)
-    {
-        if(minutes!=5 && minutes!=10)
-            return false;
-        MedicineReminder r = findByReminderId(reminderId);
-        if(r == null||!"pending".equalsIgnoreCase(r.getStatus())&&!"Snoozed".equalsIgnoreCase(r.getStatus()))
-            return false;
-        r.setSnoozeUntil(r.getSnoozeUntil().plusMinutes(minutes));
-        r.setStatus("Snoozed");
-        return true;
+    public boolean snoozedReminder(int reminderId, int minutes) {
+
+    if (minutes != 5 && minutes != 10)
+        return false;
+
+    MedicineReminder r = findByReminderId(reminderId);
+
+    if (r == null ||
+        (!"Pending".equalsIgnoreCase(r.getStatus())
+        && !"Snoozed".equalsIgnoreCase(r.getStatus())))
+        return false;
+
+    LocalDateTime now = LocalDateTime.now();
+
+    LocalDateTime baseTime = r.getSnoozeUntil();
+
+    if (baseTime == null || !baseTime.isAfter(now)) {
+        baseTime = now;
     }
+
+    r.setSnoozeUntil(baseTime.plusMinutes(minutes));
+    r.setStatus("Snoozed");
+
+    return true;
+}
     public boolean completedReminder(int reminderId)
     {
         MedicineReminder r = findByReminderId(reminderId);
@@ -151,6 +165,37 @@ public class MedicineReminderDao {
         r.setStatus("Pending");
         return true;
     }
+    public boolean skippedReminder(int reminderId) {
+
+    MedicineReminder r = findByReminderId(reminderId);
+
+    if (r == null ||
+        (!"Pending".equalsIgnoreCase(r.getStatus())
+        && !"Snoozed".equalsIgnoreCase(r.getStatus())))
+        return false;
+
+    LocalDateTime now = LocalDateTime.now();
+
+    MedicineDoseHistory mdh = new MedicineDoseHistory(
+            r.getReminderId(),
+            r.getPatientId(),
+            0,
+            r.getMedicineName(),
+            r.getDosage(),
+            r.getScheduledAt(),
+            now,
+            "Skipped"
+    );
+
+    if (!mdhd.addHistory(mdh))
+        return false;
+
+    r.setScheduledAt(now.plusHours(r.getIntervalHours()));
+    r.setSnoozeUntil(null);
+    r.setStatus("Pending");
+
+    return true;
+}
     public boolean deleteReminder(int reminderId)
     {
         MedicineReminder r=findByReminderId(reminderId);

@@ -34,7 +34,7 @@ public class PatientDao {
      User u = ud.findByUserId(staffId);
      if(u==null)
          return false;
-     if(!"Admin".equalsIgnoreCase(u.getRole())&&!"Receptionist".equalsIgnoreCase(u.getRole()))
+     if(!"Admin".equalsIgnoreCase(u.getRole())&&!"Staff".equalsIgnoreCase(u.getRole()))
          return false;
      p.setPatientId(nextPatientId++);
      p.setRegisteredBy(staffId);

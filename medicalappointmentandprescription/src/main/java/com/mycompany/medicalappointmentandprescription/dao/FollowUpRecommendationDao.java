@@ -22,7 +22,7 @@ public class FollowUpRecommendationDao {
    {
        Follows.add(new FollowUpRecommendation(1,1,1,1,LocalDate.now().plusDays(7),"Follow the prescribed medication and return for a follow-up checkup","Pending",LocalDateTime.now().minusDays(2)) );
        Follows.add(new FollowUpRecommendation(2,2,2,1,LocalDate.now().plusDays(14),"Monitor symptoms and bring previos medical report during next visit","Completed",LocalDateTime.now().minusDays(10)) );
-       Follows.add(new FollowUpRecommendation(3,3,3,1,LocalDate.now().plusDays(5),"Return for a follow-up examination and review the treatment progress","Pending",LocalDateTime.now().minusDays(1)) );
+       Follows.add(new FollowUpRecommendation(3,3,3,1,LocalDate.now().plusDays(2),"Return for a follow-up examination and review the treatment progress","Pending",LocalDateTime.now().minusDays(1)) );
    }
    public boolean addFollowUp(FollowUpRecommendation fp)
    {
@@ -57,6 +57,21 @@ public class FollowUpRecommendationDao {
        }
        return null;
    }
+    public FollowUpRecommendation findByAppointmentId(int appointmentId) {
+
+    if (appointmentId <= 0) {
+        return null;
+    }
+
+    for (FollowUpRecommendation fp : Follows) {
+
+        if (fp.getAppointmentId() == appointmentId) {
+            return fp;
+        }
+    }
+
+    return null;
+}
     public List<FollowUpRecommendation> findAll()
     {
         return new ArrayList<>(Follows);
@@ -101,7 +116,7 @@ public class FollowUpRecommendationDao {
        if(a==null||p==null||d==null||a.getDoctorId()!=fp.getDoctorId()||a.getPatientId()!=fp.getPatientId())
            return false;
         String status=fp.getStatus();
-        if(!"Pending".equalsIgnoreCase(status)&&!"Completed".equalsIgnoreCase(status)&&!"Cancelled".equalsIgnoreCase(status))
+        if(!"Pending".equalsIgnoreCase(status)&&!"Completed".equalsIgnoreCase(status)&&!"Cancelled".equalsIgnoreCase(status)   && !"Scheduled".equalsIgnoreCase(status))
          return false;
         exist.setAppointmentId(fp.getAppointmentId());
         exist.setPatientId(fp.getPatientId());

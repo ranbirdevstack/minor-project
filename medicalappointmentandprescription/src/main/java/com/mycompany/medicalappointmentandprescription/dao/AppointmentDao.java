@@ -23,7 +23,7 @@ public class AppointmentDao {
    
     static
     {
-        Appointments.add(new Appointment(1,1,1,LocalDate.now().plusDays(1),LocalTime.of(10,0),"Confirmed",LocalDateTime.now()));
+        Appointments.add(new Appointment(1,1,1,LocalDate.now(),LocalTime.of(10,0),"Confirmed",LocalDateTime.now()));
         Appointments.add(new Appointment(2,2,1,LocalDate.now().plusDays(2),LocalTime.of(11,0),"Pending",LocalDateTime.now()));
         Appointments.add(new Appointment(3,3,1,LocalDate.now().plusDays(3),LocalTime.of(12,0),"Confirmed",LocalDateTime.now()));
     }
