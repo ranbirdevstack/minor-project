@@ -10,7 +10,8 @@ import com.mycompany.medicalappointmentandprescription.dao.PatientDao;
 import com.mycompany.medicalappointmentandprescription.models.MedicineReminder;
 import com.mycompany.medicalappointmentandprescription.models.MedicineDoseHistory;
 import com.mycompany.medicalappointmentandprescription.models.Patient;
-
+import java.time.LocalDateTime;
+import javax.swing.Timer;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 /**
@@ -23,6 +24,9 @@ public class MedicineAdministrationDialog extends javax.swing.JDialog {
     private final MedicineReminderDao mrd = new MedicineReminderDao();
     private final MedicineDoseHistoryDao mdhd =new MedicineDoseHistoryDao(mrd);
     private final PatientDao pd = new PatientDao();
+    private Timer doseStatusTimer;
+private LocalDateTime activeDueTime;
+private String reminderStatus;
 
     private static final DateTimeFormatter FORMATTER =DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
 
@@ -43,9 +47,12 @@ public class MedicineAdministrationDialog extends javax.swing.JDialog {
 
        loadReminderDetails();
     }
-   public MedicineAdministrationDialog(java.awt.Frame parent,int historyId,  boolean viewOnly) {
+   public MedicineAdministrationDialog(
+        java.awt.Frame parent, int historyId, boolean viewOnly) {
 
+    super(parent, true);
     initComponents();
+
     this.historyId = historyId;
     this.viewOnly = viewOnly;
 
@@ -53,19 +60,15 @@ public class MedicineAdministrationDialog extends javax.swing.JDialog {
     setLocationRelativeTo(parent);
 
     loadHistoryDetails();
-    
-
 }
-   private void loadReminderDetails() {
+ private void loadReminderDetails() {
 
     MedicineReminder reminder =
             mrd.findByReminderId(reminderId);
 
     if (reminder == null) {
-        JOptionPane.showMessageDialog(
-                this,
-                "Medicine reminder not found."
-        );
+        JOptionPane.showMessageDialog(this,
+                "Medicine reminder not found.");
         dispose();
         return;
     }
@@ -74,10 +77,8 @@ public class MedicineAdministrationDialog extends javax.swing.JDialog {
             pd.findByPatientId(reminder.getPatientId());
 
     if (patient == null) {
-        JOptionPane.showMessageDialog(
-                this,
-                "Patient not found."
-        );
+        JOptionPane.showMessageDialog(this,
+                "Patient not found.");
         dispose();
         return;
     }
@@ -101,35 +102,73 @@ public class MedicineAdministrationDialog extends javax.swing.JDialog {
     lbldosagevalue.setText(
             reminder.getDosage());
 
+    reminderStatus = reminder.getStatus();
+
+    activeDueTime = reminder.getScheduledAt();
+
+    if ("Snoozed".equalsIgnoreCase(reminderStatus)
+            && reminder.getSnoozeUntil() != null) {
+
+        activeDueTime = reminder.getSnoozeUntil();
+    }
+
     lblscheduleddatevalue.setText(
-            reminder.getScheduledAt().format(FORMATTER));
+            activeDueTime.format(FORMATTER));
 
     lblactiondate.setVisible(false);
     lblactiondatevalue.setVisible(false);
 
-    String status = reminder.getStatus();
-
-    if ("Snoozed".equalsIgnoreCase(status)
-            && reminder.getSnoozeUntil() != null) {
-        status = reminder.getSnoozeUntil().isAfter(
-                java.time.LocalDateTime.now())
-                ? "Upcoming" : "Due";
-    } else if ("Pending".equalsIgnoreCase(status)) {
-        status = reminder.getScheduledAt().isAfter(
-                java.time.LocalDateTime.now())
-                ? "Upcoming" : "Due";
-    }
-
-    lblstatusvalue.setText(status);
-
     lbladminstrator.setVisible(true);
+
     btngiven.setVisible(true);
     btnskipped.setVisible(true);
 
-    if (!"Due".equalsIgnoreCase(status)) {
+    updateDoseStatus();
+
+    // Every second system time check hoga
+    doseStatusTimer = new Timer(1000, e -> updateDoseStatus());
+
+    doseStatusTimer.start();
+}
+ private void updateDoseStatus() {
+
+    if (!"Pending".equalsIgnoreCase(reminderStatus)
+            && !"Snoozed".equalsIgnoreCase(reminderStatus)) {
+
+        lblstatusvalue.setText(reminderStatus);
+
+        btngiven.setEnabled(false);
+        btnskipped.setEnabled(false);
+
+        return;
+    }
+
+    boolean isDue =
+            !activeDueTime.isAfter(LocalDateTime.now());
+
+    if (isDue) {
+
+        lblstatusvalue.setText("Due");
+
+        btngiven.setEnabled(true);
+        btnskipped.setEnabled(true);
+
+    } else {
+
+        lblstatusvalue.setText("Upcoming");
+
         btngiven.setEnabled(false);
         btnskipped.setEnabled(false);
     }
+}
+ @Override
+public void dispose() {
+
+    if (doseStatusTimer != null) {
+        doseStatusTimer.stop();
+    }
+
+    super.dispose();
 }
    private void loadHistoryDetails() {
 

@@ -32,6 +32,7 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
     private final PatientDao pd = new PatientDao();
    private AppointmentDashboardStaffFrame parent;
     private DefaultTableModel tableModel;
+    private final List<Integer> historyIds = new java.util.ArrayList<>();
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER =DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
     /**
@@ -78,31 +79,24 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
             .getColumn(7)
             .setCellEditor(new ActionButtonEditor());
 }
-    private void loadMedicineReminderTable() {
+  private void loadMedicineReminderTable() {
 
     tableModel.setRowCount(0);
-
-    LocalDateTime now = LocalDateTime.now();
+    historyIds.clear();
 
     String search = txtsearch.getText().trim().toLowerCase();
-
-    String selectedStatus =
-            cmbstatus.getSelectedItem().toString();
+    String selectedStatus = cmbstatus.getSelectedItem().toString();
 
     for (MedicineReminder reminder : mrd.findAll()) {
 
-        Patient patient =
-                pd.findByPatientId(reminder.getPatientId());
+        Patient patient = pd.findByPatientId(reminder.getPatientId());
 
         if (patient == null) {
             continue;
         }
 
-        String patientId =
-                String.valueOf(patient.getPatientId());
-
-        String patientName =
-                patient.getFullName();
+        String patientId = String.valueOf(patient.getPatientId());
+        String patientName = patient.getFullName();
 
         if (!search.isEmpty()
                 && !patientId.contains(search)
@@ -113,7 +107,14 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
         List<MedicineDoseHistory> histories =
                 mdhd.findByReminderId(reminder.getReminderId());
 
+        boolean historyExists = false;
+
         for (MedicineDoseHistory history : histories) {
+
+            if (history.getScheduledAt() != null
+                    && history.getScheduledAt().equals(reminder.getScheduledAt())) {
+                historyExists = true;
+            }
 
             String status = history.getStatus();
 
@@ -132,43 +133,26 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
                 status,
                 "View"
             });
+
+            historyIds.add(history.getHistoryId());
         }
 
-        boolean historyExists = false;
+        if (!historyExists
+                && ("Pending".equalsIgnoreCase(reminder.getStatus())
+                || "Snoozed".equalsIgnoreCase(reminder.getStatus()))) {
 
-        for (MedicineDoseHistory history : histories) {
-
-            if (history.getScheduledAt() != null
-                    && history.getScheduledAt().equals(
-                            reminder.getScheduledAt())) {
-
-                historyExists = true;
-                break;
-            }
-        }
-
-        if (!historyExists) {
-
-            LocalDateTime displayTime =
-                    reminder.getScheduledAt();
-
-            if ("Snoozed".equalsIgnoreCase(reminder.getStatus())
-                    && reminder.getSnoozeUntil() != null) {
-
-                displayTime = reminder.getSnoozeUntil();
-            }
-
-            String doseStatus =
-                    displayTime.isAfter(now) ? "Upcoming" : "Due";
-
-            if (!"Pending".equalsIgnoreCase(reminder.getStatus())
-                    && !"Snoozed".equalsIgnoreCase(reminder.getStatus())) {
-                continue;
-            }
+            String doseStatus = reminder.getStatus();
 
             if (!selectedStatus.equals("All")
                     && !selectedStatus.equalsIgnoreCase(doseStatus)) {
                 continue;
+            }
+
+            LocalDateTime displayTime = reminder.getScheduledAt();
+
+            if ("Snoozed".equalsIgnoreCase(doseStatus)
+                    && reminder.getSnoozeUntil() != null) {
+                displayTime = reminder.getSnoozeUntil();
             }
 
             tableModel.addRow(new Object[]{
@@ -179,15 +163,17 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
                 reminder.getDosage(),
                 displayTime.format(DATE_TIME_FORMATTER),
                 doseStatus,
-                doseStatus.equals("Due") ? "Administer" : "View"
+                "Administer"
             });
+
+            historyIds.add(0);
         }
     }
 }
     private void searchMedicineReminderTable() {
 
     tableModel.setRowCount(0);
-
+    historyIds.clear();
     String search = txtsearch.getText().trim().toLowerCase();
 
     if (search.isEmpty()) {
@@ -257,7 +243,9 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
             status,
             "View"
         });
+        historyIds.add(history.getHistoryId());
     }
+    
 
     boolean historyExists = false;
 
@@ -282,8 +270,7 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
             displayTime = reminder.getSnoozeUntil();
         }
 
-        String doseStatus =
-                displayTime.isAfter(now) ? "Upcoming" : "Due";
+       String doseStatus = reminder.getStatus();
 
         if (!"Pending".equalsIgnoreCase(reminder.getStatus())
                 && !"Snoozed".equalsIgnoreCase(reminder.getStatus())) {
@@ -303,7 +290,9 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
             reminder.getDosage(),
             displayTime.format(DATE_TIME_FORMATTER),
             doseStatus,
-            doseStatus.equals("Due") ? "Administer" : "View"
+            doseStatus.equalsIgnoreCase("Pending")
+        || doseStatus.equalsIgnoreCase("Snoozed")
+        ? "Administer" : "View"
         });
     }
 }
@@ -407,7 +396,7 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
         lblstatus.setText("Status:");
 
         cmbstatus.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        cmbstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Due", "Given", "Skipped" }));
+        cmbstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Pending", "Snoozed", "Completed", "Skipped", "Given" }));
         cmbstatus.addActionListener(this::cmbstatusActionPerformed);
 
         tblmedicinerminder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -452,7 +441,7 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addComponent(lblstatus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(spmedicinereminder, javax.swing.GroupLayout.PREFERRED_SIZE, 702, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -565,6 +554,7 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
     private final JButton button = new JButton();
 
     private int reminderId;
+    private int historyId;
 
     private String action;
 
@@ -575,9 +565,12 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
             fireEditingStopped();
 
             if ("Administer".equals(action)) {
+
                 openAdministrationDialog(reminderId);
-            } else {
-                openHistoryDetails(reminderId);
+
+            } else if (historyId > 0) {
+
+                openHistoryDetails(historyId);
             }
         });
     }
@@ -589,9 +582,13 @@ public class MedicineAdministrationFrame extends javax.swing.JFrame {
 
         action = value.toString();
 
+        int modelRow = table.convertRowIndexToModel(row);
+
         reminderId = Integer.parseInt(
                 table.getValueAt(row, 0).toString()
         );
+
+        historyId = historyIds.get(modelRow);
 
         button.setText(action);
 
